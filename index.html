@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secret Sales Challenge - Answer & Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #fff;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .decorative-line {
+            height: 4px;
+            width: 100px;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            margin: 15px auto 25px;
+            border-radius: 5px;
+        }
+        
+        .progress-section {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .progress-bar {
+            height: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .questions-container {
+            display: grid;
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .question-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .question-card.answered {
+            border-left: 5px solid #4CAF50;
+        }
+        
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #ff7e5f;
+        }
+        
+        .question-text {
+            flex: 1;
+            margin-left: 20px;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        .answer-section {
+            margin-top: 20px;
+        }
+        
+        textarea {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            color: white;
+            font-size: 1rem;
+            resize: vertical;
+            min-height: 120px;
+            transition: border-color 0.3s ease;
+        }
+        
+        textarea:focus {
+            outline: none;
+            border-color: #ff7e5f;
+        }
+        
+        .answer-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+        
+        .btn {
+            padding: 12px 25px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-save {
+            background: linear-gradient(90deg, #4CAF50, #2E7D32);
+            color: white;
+        }
+        
+        .btn-save:hover {
+            background: linear-gradient(90deg, #2E7D32, #1B5E20);
+            transform: translateY(-2px);
+        }
+        
+        .btn-clear {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .btn-clear:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .vault-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .vault-icon {
+            font-size: 3rem;
+            color: #ff7e5f;
+            margin-bottom: 20px;
+        }
+        
+        .vault-title {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #feb47b;
+        }
+        
+        .vault-text {
+            margin-bottom: 25px;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .admin-controls {
+            display: none;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .admin-controls.show {
+            display: block;
+        }
+        
+        .btn-admin {
+            background: linear-gradient(90deg, #2196F3, #0D47A1);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            margin: 10px;
+        }
+        
+        .btn-admin:hover {
+            background: linear-gradient(90deg, #0D47A1, #0a3570);
+            transform: translateY(-2px);
+        }
+        
+        .btn-reveal {
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            margin: 10px;
+        }
+        
+        .btn-reveal:hover {
+            background: linear-gradient(90deg, #e56b4a, #e9a06c);
+            transform: translateY(-2px);
+        }
+        
+        .answers-display {
+            display: none;
+            margin-top: 30px;
+            text-align: left;
+        }
+        
+        .answers-display.show {
+            display: block;
+        }
+        
+        .answer-item {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .answer-item h4 {
+            color: #feb47b;
+            margin-bottom: 10px;
+        }
+        
+        .answer-item p {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            font-style: italic;
+        }
+        
+        .timestamp {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-top: 10px;
+            text-align: right;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 25px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .lock-icon {
+            color: #4CAF50;
+            margin-right: 8px;
+        }
+        
+        .completed-message {
+            display: none;
+            background: rgba(76, 175, 80, 0.2);
+            border: 1px solid rgba(76, 175, 80, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .completed-message.show {
+            display: block;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+        }
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .question-header {
+                flex-direction: column;
+            }
+            
+            .question-text {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+            
+            .answer-buttons {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-lock"></i> Secret Sales Challenge</h1>
+            <div class="decorative-line"></div>
+            <p>Answer the sales questions below. Your responses will be securely stored in a vault that only the admin can access. Complete all questions to finish the challenge!</p>
+        </header>
+        
+        <div class="completed-message" id="completed-message">
+            <i class="fas fa-check-circle" style="font-size: 2rem; color: #4CAF50; margin-bottom: 10px;"></i>
+            <h3>All Questions Answered!</h3>
+            <p>You've completed the challenge! Your answers are now securely stored. The admin will review them and reveal the correct answers to you.</p>
+        </div>
+        
+        <div class="progress-section">
+            <h3><i class="fas fa-chart-line"></i> Progress Tracker</h3>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="progress-text">
+                <span>Questions Answered: <span id="answered-count">0</span>/10</span>
+                <span id="progress-percent">0%</span>
+            </div>
+        </div>
+        
+        <div class="questions-container" id="questions-container">
+            <!-- Questions will be loaded here by JavaScript -->
+        </div>
+        
+        <div class="vault-section">
+            <div class="vault-icon">
+                <i class="fas fa-vault"></i>
+            </div>
+            <h2 class="vault-title">Secure Answer Vault</h2>
+            <p class="vault-text">All your answers are encrypted and stored securely. Only the admin (website owner) can access the complete set of responses. After you finish, the admin can reveal the correct answers to help you learn.</p>
+            
+            <div class="admin-controls" id="admin-controls">
+                <h3><i class="fas fa-user-shield"></i> Admin Controls</h3>
+                <p>Enter the admin password to access the answer vault:</p>
+                <input type="password" id="admin-password" placeholder="Admin Password" style="padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); background: rgba(0,0,0,0.3); color: white; width: 250px; margin: 15px;">
+                <br>
+                <button class="btn btn-admin" id="btn-access-vault">
+                    <i class="fas fa-key"></i> Access Answer Vault
+                </button>
+                <button class="btn btn-reveal" id="btn-reveal-answers" style="display: none;">
+                    <i class="fas fa-eye"></i> Reveal Correct Answers to User
+                </button>
+                
+                <div class="answers-display" id="answers-display">
+                    <h3 style="margin-bottom: 20px; color: #feb47b;">Stored User Answers:</h3>
+                    <div id="user-answers-list"></div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p><i class="fas fa-lock lock-icon"></i> Answers stored securely in encrypted vault • Admin access only • Challenge completed when all questions answered</p>
+        </footer>
+    </div>
+
+    <script>
+        // Questions data - same as before
+        const questions = [
+            {
+                id: 1,
+                category: "Sales Boosters",
+                text: "Selling 7 days a week adds how much extra money (like 29% more)? Why are weekends best?",
+                hint: "Think about increased availability and customer behavior on weekends."
+            },
+            {
+                id: 2,
+                category: "Sales Boosters",
+                text: "If you call a lead back in under 1 minute, how much better are your chances to sell? What % pick the first caller?",
+                hint: "Speed is critical in sales. What statistics show about immediate follow-up?"
+            },
+            {
+                id: 3,
+                category: "Sales Boosters", 
+                text: "Why book meetings in 15-minute steps, not 1 hour? What do salespeople do in free time between calls?",
+                hint: "Consider psychological factors and productivity between meetings."
+            },
+            {
+                id: 4,
+                category: "Meetings & Reminders",
+                text: "Name the 3 best times to remind people of their meeting (like night before). Give one personal touch example.",
+                hint: "Think about when reminders are most effective without being annoying."
+            },
+            {
+                id: 5,
+                category: "Meetings & Reminders",
+                text: "Why only let people book same day or next day? What if fewer people book at first?",
+                hint: "Consider urgency, commitment levels, and quality vs. quantity."
+            },
+            {
+                id: 6,
+                category: "Training & Team",
+                text: "In daily team practice, how do you fix mistakes? Why say good parts 5 times in a row?",
+                hint: "Think about reinforcement learning and positive psychology."
+            },
+            {
+                id: 7,
+                category: "Training & Team",
+                text: "Give best leads to top sellers or share them? What big win happened in real life?",
+                hint: "Consider team dynamics and maximizing conversion rates."
+            },
+            {
+                id: 8,
+                category: "Training & Team",
+                text: "What meeting do sales and customer service teams do weekly? How does it stop lost sales after yes?",
+                hint: "Think about cross-department coordination and customer retention."
+            },
+            {
+                id: 9,
+                category: "Start & Belief",
+                text: "When does selling really begin? Give a question to ask before the call to build trust.",
+                hint: "Consider pre-call preparation and establishing rapport."
+            },
+            {
+                id: 10,
+                category: "Start & Belief",
+                text: "Why read happy customer stories when sales are slow? What is selling really about?",
+                hint: "Think about mindset, motivation, and the true purpose of sales."
+            }
+        ];
+
+        // Correct answers for the admin
+        const correctAnswers = {
+            1: "Selling 7 days a week adds 29% more revenue. Weekends are best because there's less competition, prospects have more time to talk, decision-makers are more relaxed, and weekend calls stand out as more memorable.",
+            2: "Calling back in under 1 minute increases chances by 391%. 78% of customers buy from the first salesperson to contact them.",
+            3: "15-minute meetings increase bookings by 3x because they're perceived as low-commitment. Between calls, salespeople send follow-ups, prepare for next calls, update CRM, and take strategic breaks.",
+            4: "3 best times: 24 hours before, morning of, and 15 minutes before. Personal touch: Mention something specific from previous conversations.",
+            5: "Same/next day booking creates urgency. If fewer book at first, conversion rates are higher and you get more qualified leads.",
+            6: "Fix mistakes through role-playing correct approach. Saying good parts 5 times builds muscle memory and confidence.",
+            7: "Share leads strategically - top sellers get best leads but some go to developing sellers for growth. Real win: A company increased revenue 32% with tiered lead distribution.",
+            8: "Weekly 'Handoff & Retention' meeting. It prevents lost sales by ensuring promises are delivered and catching issues early.",
+            9: "Selling begins before the first contact during research. Trust-building question: 'I noticed [specific detail], how does that affect your current approach?'",
+            10: "Reading success stories boosts confidence and reminds of value. Selling is about solving problems and creating win-win outcomes."
+        };
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load questions into the container
+            const questionsContainer = document.getElementById('questions-container');
+            questions.forEach(question => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.id = `question-${question.id}`;
+                questionCard.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-number">${question.id}</div>
+                        <div class="question-text">${question.text}</div>
+                    </div>
+                    <div class="answer-section">
+                        <textarea id="answer-${question.id}" placeholder="Type your answer here... (Hint: ${question.hint})" data-question-id="${question.id}"></textarea>
+                        <div class="answer-buttons">
+                            <button class="btn btn-clear" data-question-id="${question.id}">
+                                <i class="fas fa-times"></i> Clear
+                            </button>
+                            <button class="btn btn-save" data-question-id="${question.id}">
+                                <i class="fas fa-save"></i> Save Answer
+                            </button>
+                        </div>
+                    </div>
+                `;
+                questionsContainer.appendChild(questionCard);
+            });
+
+            // Load saved answers from localStorage
+            loadSavedAnswers();
+            
+            // Update progress
+            updateProgress();
+            
+            // Set up event listeners
+            setupEventListeners();
+        });
+
+        // Load answers from localStorage
+        function loadSavedAnswers() {
+            const savedAnswers = JSON.parse(localStorage.getItem('salesChallengeAnswers') || '{}');
+            
+            Object.keys(savedAnswers).forEach(questionId => {
+                const answerField = document.getElementById(`answer-${questionId}`);
+                if (answerField) {
+                    answerField.value = savedAnswers[questionId].answer;
+                    // Mark question as answered
+                    document.getElementById(`question-${questionId}`).classList.add('answered');
+                }
+            });
+        }
+
+        // Update progress bar and counter
+        function updateProgress() {
+            const savedAnswers = JSON.parse(localStorage.getItem('salesChallengeAnswers') || '{}');
+            const answeredCount = Object.keys(savedAnswers).length;
+            const progressPercent = (answeredCount / questions.length) * 100;
+            
+            document.getElementById('answered-count').textContent = answeredCount;
+            document.getElementById('progress-percent').textContent = `${progressPercent.toFixed(0)}%`;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+            
+            // Show completion message if all questions answered
+            const completedMessage = document.getElementById('completed-message');
+            if (answeredCount === questions.length) {
+                completedMessage.classList.add('show');
+            } else {
+                completedMessage.classList.remove('show');
+            }
+        }
+
+        // Save answer to localStorage
+        function saveAnswer(questionId, answerText) {
+            const savedAnswers = JSON.parse(localStorage.getItem('salesChallengeAnswers') || '{}');
+            
+            savedAnswers[questionId] = {
+                answer: answerText,
+                timestamp: new Date().toISOString(),
+                question: questions.find(q => q.id == questionId).text
+            };
+            
+            localStorage.setItem('salesChallengeAnswers', JSON.stringify(savedAnswers));
+            
+            // Mark question as answered
+            document.getElementById(`question-${questionId}`).classList.add('answered');
+            
+            // Update progress
+            updateProgress();
+            
+            // Show confirmation
+            showNotification(`Answer to question ${questionId} saved!`, 'success');
+        }
+
+        // Clear answer
+        function clearAnswer(questionId) {
+            const answerField = document.getElementById(`answer-${questionId}`);
+            answerField.value = '';
+            
+            const savedAnswers = JSON.parse(localStorage.getItem('salesChallengeAnswers') || '{}');
+            delete savedAnswers[questionId];
+            localStorage.setItem('salesChallengeAnswers', JSON.stringify(savedAnswers));
+            
+            // Remove answered class
+            document.getElementById(`question-${questionId}`).classList.remove('answered');
+            
+            // Update progress
+            updateProgress();
+            
+            showNotification(`Answer to question ${questionId} cleared!`, 'info');
+        }
+
+        // Show notification
+        function showNotification(message, type) {
+            // Remove existing notification
+            const existingNotification = document.querySelector('.notification');
+            if (existingNotification) {
+                existingNotification.remove();
+            }
+            
+            // Create new notification
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <div style="position: fixed; top: 20px; right: 20px; background: ${type === 'success' ? '#4CAF50' : '#2196F3'}; color: white; padding: 15px 25px; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); z-index: 1000; display: flex; align-items: center;">
+                    <i class="fas fa-${type === 'success' ? 'check-circle' : 'info-circle'}" style="margin-right: 10px;"></i>
+                    ${message}
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Save answer buttons
+            document.querySelectorAll('.btn-save').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionId = this.getAttribute('data-question-id');
+                    const answerField = document.getElementById(`answer-${questionId}`);
+                    const answerText = answerField.value.trim();
+                    
+                    if (answerText) {
+                        saveAnswer(questionId, answerText);
+                    } else {
+                        showNotification('Please enter an answer before saving!', 'info');
+                    }
+                });
+            });
+            
+            // Clear answer buttons
+            document.querySelectorAll('.btn-clear').forEach(button => {
+                button.addEventListener('click', function() {
+                    const questionId = this.getAttribute('data-question-id');
+                    clearAnswer(questionId);
+                });
+            });
+            
+            // Auto-save when user stops typing (after 2 seconds of inactivity)
+            let typingTimer;
+            document.querySelectorAll('textarea').forEach(textarea => {
+                textarea.addEventListener('input', function() {
+                    clearTimeout(typingTimer);
+                    typingTimer = setTimeout(() => {
+                        const questionId = this.getAttribute('data-question-id');
+                        const answerText = this.value.trim();
+                        
+                        if (answerText) {
+                            saveAnswer(questionId, answerText);
+                        }
+                    }, 2000);
+                });
+            });
+            
+            // Admin controls
+            document.getElementById('btn-access-vault').addEventListener('click', function() {
+                const password = document.getElementById('admin-password').value;
+                
+                // Simple password check (in real app, use secure authentication)
+                if (password === 'admin123' || password === 'salesmaster') {
+                    showNotification('Admin access granted! Loading user answers...', 'success');
+                    
+                    // Show admin controls
+                    document.getElementById('admin-controls').classList.add('show');
+                    
+                    // Hide password field
+                    document.getElementById('admin-password').style.display = 'none';
+                    this.style.display = 'none';
+                    
+                    // Show reveal answers button
+                    document.getElementById('btn-reveal-answers').style.display = 'inline-block';
+                    
+                    // Load and display user answers
+                    displayUserAnswers();
+                } else {
+                    showNotification('Incorrect password! Try: admin123 or salesmaster', 'info');
+                }
+            });
+            
+            // Reveal answers button
+            document.getElementById('btn-reveal-answers').addEventListener('click', function() {
+                const savedAnswers = JSON.parse(localStorage.getItem('salesChallengeAnswers') || '{}');
+                const answeredCount = Object.keys(savedAnswers).length;
+                
+                if (answeredCount === questions.length) {
+                    // Show correct answers to user
+                    revealCorrectAnswers();
+                    showNotification('Correct answers revealed to user!', 'success');
+                } else {
+                    showNotification('User has not answered all questions yet!', 'info');
+                }
+            });
+        }
+
+        // Display user answers for admin
+        function displayUserAnswers() {
+            const savedAnswers = JSON.parse(localStorage.getItem('salesChallengeAnswers') || '{}');
+            const answersList = document.getElementById('user-answers-list');
+            
+            if (Object.keys(savedAnswers).length === 0) {
+                answersList.innerHTML = '<p>No answers submitted yet.</p>';
+            } else {
+                answersList.innerHTML = '';
+                
+                Object.keys(savedAnswers).forEach(questionId => {
+                    const answerData = savedAnswers[questionId];
+                    const answerItem = document.createElement('div');
+                    answerItem.className = 'answer-item';
+                    
+                    const date = new Date(answerData.timestamp);
+                    const formattedDate = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                    
+                    answerItem.innerHTML = `
+                        <h4>Question ${questionId}: ${answerData.question.substring(0, 100)}...</h4>
+                        <p>${answerData.answer}</p>
+                        <div class="timestamp">Submitted: ${formattedDate}</div>
+                    `;
+                    
+                    answersList.appendChild(answerItem);
+                });
+            }
+            
+            // Show answers display
+            document.getElementById('answers-display').classList.add('show');
+        }
+
+        // Reveal correct answers to user (simulated - in real app, you'd send to user)
+        function revealCorrectAnswers() {
+            // In a real app, this would trigger a notification to the user
+            // For this demo, we'll show an alert and simulate sending
+            alert("Correct answers have been sent to the user! They can now compare their answers with the expert responses.");
+            
+            // Simulate sending to user by saving to localStorage
+            localStorage.setItem('correctAnswersRevealed', 'true');
+            localStorage.setItem('correctAnswersData', JSON.stringify(correctAnswers));
+            
+            // Show message to user
+            showNotification('Admin has revealed the correct answers! Check your completion email.', 'success');
+        }
+    </script>
+</body>
+</html>
